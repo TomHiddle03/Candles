@@ -1,0 +1,32 @@
+{
+  "name": "candles-prediction-generator",
+  "version": "1.0.0",
+  "description": "CoinGecko prediction generator for Candles Subnet miners",
+  "main": "prediction-generator.js",
+  "scripts": {
+    "start": "node prediction-generator.js",
+    "preview": "node prediction-generator.js --preview",
+    "test": "node test-prediction-generator.js",
+    "examples": "node test-prediction-generator.js --examples"
+  },
+  "keywords": [
+    "bittensor",
+    "candles",
+    "subnet",
+    "prediction",
+    "cryptocurrency",
+    "tao"
+  ],
+  "author": "Candles Subnet",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
