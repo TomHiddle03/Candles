@@ -569,10 +569,10 @@ Get API Key (optional):
         return;
     }
 
-    const apiKey = args[0] || process.env.COINGECKO_API_KEY;
+    const apiKey = args[0] || process.env.COINGECKO_API_KEY || 'CG-b7zC1kt7UH8a3Q3xQ8r72iiX';
     
     // CoinGecko works without API key (free tier)
-    console.log(`� Starting with ${apiKey ? 'Pro' : 'Free'} tier...`);
+    console.log(`🚀 Starting with ${apiKey ? 'Pro' : 'Free'} tier...`);
 
     try {
         const generator = new PredictionGenerator(apiKey);
