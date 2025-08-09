@@ -1,6 +1,9 @@
 // CoinGecko Prediction Generator for Candles Subnet
 // Simple, focused implementation using CoinGecko API (free tier available)
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -8,19 +11,15 @@ class PredictionGenerator {
     constructor(apiKey = null) {
         this.apiKey = apiKey; // Optional - CoinGecko has free tier
         this.baseUrl = 'https://api.coingecko.com/api/v3';
-        this.proBaseUrl = 'https://pro-api.coingecko.com/api/v3'; // For pro users
         this.coinId = 'bittensor'; // TAO's ID on CoinGecko
         
-        // Use pro API if key is provided, otherwise free API
-        this.effectiveBaseUrl = apiKey ? this.proBaseUrl : this.baseUrl;
-        
         this.headers = {
-            'Accept': 'application/json'
+            'accept': 'application/json'
         };
         
         // Add API key header if provided
         if (apiKey) {
-            this.headers['x-cg-pro-api-key'] = apiKey;
+            this.headers['x-cg-demo-api-key'] = apiKey;
         }
         
         console.log(`🚀 Initialized CoinGecko Prediction Generator (${apiKey ? 'Pro' : 'Free'} tier)`);
@@ -55,8 +54,8 @@ class PredictionGenerator {
 
     // Get TAO cryptocurrency info from CoinGecko
     async getTaoInfo() {
-        const url = `${this.effectiveBaseUrl}/coins/${this.coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false`;
-        
+        const url = `${this.baseUrl}/coins/${this.coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false`;
+        console.log('🔗 API URL:', url);
         try {
             const response = await fetch(url, { headers: this.headers });
             
@@ -77,10 +76,11 @@ class PredictionGenerator {
 
     // Fetch OHLC data from CoinGecko
     async fetchOHLCData(days = 30) {
-        const url = `${this.effectiveBaseUrl}/coins/${this.coinId}/ohlc?vs_currency=usd&days=${days}`;
+        const url = `${this.baseUrl}/coins/${this.coinId}/ohlc?vs_currency=usd&days=${days}`;
         
         try {
             console.log('📊 Fetching OHLC data from CoinGecko...');
+            console.log('🔗 OHLC URL:', url);
             
             const response = await fetch(url, { headers: this.headers });
             
@@ -107,7 +107,7 @@ class PredictionGenerator {
 
     // Get current price and market data
     async getCurrentPrice() {
-        const url = `${this.effectiveBaseUrl}/simple/price?ids=${this.coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`;
+        const url = `${this.baseUrl}/simple/price?ids=${this.coinId}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true`;
         
         try {
             const response = await fetch(url, { headers: this.headers });
@@ -569,7 +569,7 @@ Get API Key (optional):
         return;
     }
 
-    const apiKey = args[0] || process.env.COINGECKO_API_KEY || 'CG-b7zC1kt7UH8a3Q3xQ8r72iiX';
+    const apiKey = process.env.COINGECKO_API_KEY;
     
     // CoinGecko works without API key (free tier)
     console.log(`🚀 Starting with ${apiKey ? 'Pro' : 'Free'} tier...`);
